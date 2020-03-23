@@ -82,31 +82,12 @@ Rectangle {
         onPositionChanged:  {
             var currentPosition = positionSource.position.coordinate
             map.center = currentPosition
-            var distance = currentPosition.distanceTo(lastSearchPosition)
-            if (distance > 500) {
-                // 500m from last performed pizza search
-                lastSearchPosition = currentPosition
-                searchModel.searchArea = QtPositioning.circle(currentPosition)
-                searchModel.update()
-            }
         }
     }
     //! [Current Location]
 
-    //! [PlaceSearchModel]
     property variant locationHelsinki: QtPositioning.coordinate( 63.101, 21.645 )
 
-    PlaceSearchModel {
-        id: searchModel
-
-        plugin: myPlugin
-
-        searchTerm: "Pizza"
-        searchArea: QtPositioning.circle(locationHelsinki)
-
-        Component.onCompleted: update()
-    }
-    //! [PlaceSearchModel]
 
     //! [Places MapItemView]
     Map {
@@ -133,11 +114,5 @@ Rectangle {
     }
     //! [Places MapItemView]
 
-    Connections {
-        target: searchModel
-        onStatusChanged: {
-            if (searchModel.status == PlaceSearchModel.Error)
-                console.log(searchModel.errorString());
-        }
-    }
+
 }
