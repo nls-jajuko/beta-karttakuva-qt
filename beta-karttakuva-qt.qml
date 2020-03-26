@@ -87,8 +87,20 @@ ColumnLayout {
     }
 
     //! [Initialize Plugin]
+
     Plugin {
-        id: myPlugin
+        id: bkPlugin
+        name: "betakarttakuva"
+        PluginParameter {
+                  name: "betakarttakuva.geocoding.host"
+                  value: "https://beta-karttakuva.maanmittauslaitos.fi"
+
+        }
+
+    }
+
+    Plugin {
+        id: mapboxPlugin
         name: "mapboxgl" 
         PluginParameter {
                   name: "mapboxgl.mapping.additional_style_urls"
@@ -117,6 +129,16 @@ ColumnLayout {
 
     property variant locationHelsinki: QtPositioning.coordinate( 63.101, 21.645 )
 
+    PlaceSearchModel {
+        id: searchModel
+
+        plugin: bkPlugin
+
+        searchTerm: "helsinki"
+
+        Component.onCompleted: update()
+
+    }
 
     //! [Places MapItemView]
     Map {
@@ -126,7 +148,7 @@ ColumnLayout {
         Layout.margins: 5
         Layout.fillWidth: true
         Layout.fillHeight: true
-        plugin: myPlugin;
+        plugin: mapboxPlugin;
         center: locationHelsinki
         zoomLevel: 13
 
