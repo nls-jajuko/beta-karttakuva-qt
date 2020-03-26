@@ -52,10 +52,39 @@
 import QtQuick 2.0
 import QtPositioning 5.5
 import QtLocation 5.6
+import QtQuick.Controls 2.4
+import QtQuick.Layouts 1.3
+
 //! [Imports]
 
-Rectangle {
+// Rectangle
+ColumnLayout {
     anchors.fill: parent
+
+    TextField {
+            id: singleline
+            text: ""
+            Layout.alignment: Qt.AlignLeft| Qt.AlignTop
+            Layout.margins: 5
+            Layout.fillWidth: true
+            background: Rectangle {
+               implicitWidth: 200
+               implicitHeight: 40
+               border.color: singleline.focus ? "#21be2b" : "lightgray"
+               color: singleline.focus ? "lightgray" : "transparent"
+            }
+        }
+
+    ListView {
+        width: 100; height: 100
+        Layout.fillWidth: true
+        delegate: Rectangle {
+            height: 25
+            width: 100
+            color: model.modelData.color
+            Text { text: name }
+        }
+    }
 
     //! [Initialize Plugin]
     Plugin {
@@ -92,7 +121,11 @@ Rectangle {
     //! [Places MapItemView]
     Map {
         id: map
-        anchors.fill: parent
+        //anchors.fill: parent
+        Layout.alignment: Qt.AlignLeft
+        Layout.margins: 5
+        Layout.fillWidth: true
+        Layout.fillHeight: true
         plugin: myPlugin;
         center: locationHelsinki
         zoomLevel: 13
