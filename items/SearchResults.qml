@@ -9,29 +9,64 @@ ListView {
 
     signal flyTo(variant loc)
 
-    id: results
+    id: root
     anchors.fill: parent
     model: searchModel
     delegate: Component {
+
         Item {
-            width: parent.width;
-            height: 30
-            Marker { height: parent.height }
+            id: placeRoot
+            width: root.width
+            height: Math.max(icon.height, 3 * placeName.height)
 
-            Column {
-                Text { text: title; font.bold: false }
-                //Text { text: place.location.address.text }
-            }
-            MouseArea {
+            Rectangle {
                 anchors.fill: parent
-               onClicked: {
-                  results.flyTo(place.location);
-               }
+                color: "#a0f0f0f0"
+                visible: true
             }
 
+            GridLayout {
+                rows: 2
+                columns: 2
+                anchors.fill: parent
+                anchors.leftMargin: 30
+                flow: GridLayout.TopToBottom
 
+                Image {
+                    // anchors.verticalCenter: parent.verticalCenter
+                    id:icon
+                    source: "marker.png"
+                    Layout.rowSpan: 2
+                }
+
+                Label {
+                    id: placeName
+                    text: title
+                    Layout.fillWidth: true
+                }
+
+            }
+
+            Rectangle {
+                anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.margins: 15
+                height: 1
+                color: "#46a2da"
+            }
+
+            MouseArea {
+                id: mouse
+                anchors.fill: parent
+                onClicked: {
+
+                       root.flyTo(place.location);
+
+                }
+            }
 
         }
-     }
+
+    }
 
 }
