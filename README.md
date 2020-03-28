@@ -1,6 +1,6 @@
 # beta-karttakuva-qt
 
-multi-platform map app with help from qt.io
+a multi-platform map app mashup with help from qt.io examples
 
 with geocoding 
 ( needs libqtgeoservices_betakarttakuva.dylib in plugins/geoservices )
