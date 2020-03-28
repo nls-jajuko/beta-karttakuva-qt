@@ -8,3 +8,5 @@ with geocoding
 
 ![Beta Karttakuva screenshot](pic.png)
 
+
+![Beta Karttakuva geocoding screenshot](pic-geocoding.png)
