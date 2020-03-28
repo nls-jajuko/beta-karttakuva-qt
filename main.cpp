@@ -50,17 +50,32 @@
 
 #include <QGuiApplication>
 #include <QQuickView>
+#include <QGeoServiceProvider>
+#include <QQmlApplicationEngine>
 
 int main(int argc, char **argv)
 {
     QGuiApplication app(argc,argv);
 
+    // make plugin available at (on a macos )
+    // copy build-beta-karttakuva-qtplugin-Desktop_Qt_5_14_1_clang_64bit-Release/plugins/geoservices/libqtgeoservices_betakarttakuva.dylib*
+    // to .../Qt514/5.14.1/clang_64/plugins/geoservices
 
-    QQuickView view;
-    view.setSource(QUrl(QStringLiteral("qrc:///beta-karttakuva-qt.qml")));
-    view.setWidth(360);
-    view.setHeight(640);
-    view.show();
+    QList<QString> providers = QGeoServiceProvider::availableServiceProviders();
+    qDebug()<<providers;
+    qDebug()<<app.libraryPaths();
 
+    QQmlApplicationEngine engine;
+    engine.addImportPath(QStringLiteral(":/imports"));
+    engine.load(QUrl(QStringLiteral("qrc:///beta-karttakuva-qt.qml")));
+    QObject::connect(&engine, SIGNAL(quit()), qApp, SLOT(quit()));
+
+    QObject *item = engine.rootObjects().first();
+    Q_ASSERT(item);
+
+/*    QMetaObject::invokeMethod(item, "initializeProviders",
+                                 Q_ARG(QVariant, QVariant::fromValue(parameters)));
+*/
     return app.exec();
+
 }

@@ -49,40 +49,41 @@
 ****************************************************************************/
 
 //! [Imports]
-import QtQuick 2.0
+import QtQuick 2.5
+import QtQuick.Controls 1.4
 import QtPositioning 5.5
 import QtLocation 5.6
-import QtQuick.Controls 2.4
 import QtQuick.Layouts 1.3
+import "items"
 
 //! [Imports]
 
-// Rectangle
-ColumnLayout {
-    anchors.fill: parent
+ApplicationWindow {
+    id: appWindow
+    //anchors.fill: parent
+    title: qsTr("Beta Karttakuva")
+    width: 360
+    height: 640
+    visible: true
+    toolBar: searchBar
 
-    TextField {
-            id: singleline
-            text: ""
-            Layout.alignment: Qt.AlignLeft| Qt.AlignTop
-            Layout.margins: 5
-            Layout.fillWidth: true
-            background: Rectangle {
-               implicitWidth: 200
-               implicitHeight: 40
-               border.color: singleline.focus ? "#21be2b" : "lightgray"
-               color: singleline.focus ? "lightgray" : "transparent"
+    SearchBar {
+        id: searchBar
+        width: appWindow.width
+        searchBarVisbile: true
+        onSearchTextChanged: {
+            if (searchText.length >= 2 ) {
+                searchModel.searchTerm = searchText;
+                searchModel.update();
             }
         }
-
-    ListView {
-        width: 100; height: 100
-        Layout.fillWidth: true
-        delegate: Rectangle {
-            height: 25
-            width: 100
-            color: model.modelData.color
-            Text { text: name }
+        onDoSearch: {
+            console.log("SEARCH",searchText);
+            searchModel.searchForText(searchText);
+        }
+        onDoClear: {
+            showSearch('')
+            searchResults.visible=false;
         }
     }
 
@@ -91,13 +92,15 @@ ColumnLayout {
     Plugin {
         id: bkPlugin
         name: "betakarttakuva"
+        allowExperimental: true
         PluginParameter {
-                  name: "betakarttakuva.geocoding.host"
-                  value: "https://beta-karttakuva.maanmittauslaitos.fi"
+                  name: "betakarttakuva.places.host"
+                  value: "https://beta-paikkatieto.maanmittauslaitos.fi"
 
         }
 
     }
+
 
     Plugin {
         id: mapboxPlugin
@@ -110,6 +113,7 @@ ColumnLayout {
         PluginParameter {
                   name: "mapboxgl.access_token"
                   value: "pk.eyJ1IjoiamFuc2t1IiwiYSI6ImNqMzJvNXRibzAwMDcyeG9jaHhwMnc2d2YifQ.mN0O1o-WgG6wvb9B06ChXw"
+
         }
     }
     //! [Initialize Plugin]
@@ -134,20 +138,47 @@ ColumnLayout {
 
         plugin: bkPlugin
 
-        searchTerm: "helsinki"
+        onStatusChanged: {
+            switch (status) {
+            case PlaceSearchModel.Ready:
+                if (count > 0) {
+                    console.log("FOUND",count)
+                     searchResults.visible =true;
+                } else
+                    console.log("FOUND","NONE")
+                break;
+            case PlaceSearchModel.Error:
+                console.log("Search Place Error",errorString())
+                break;
+            }
+        }
 
-        Component.onCompleted: update()
+        function searchForText(text) {
+            console.log("PLACEMODEL",text)
+            searchTerm = text;
+            categories = null;
+            limit = -1;
+            console.log("PLACEMODEL","update")
+            update();
+        }
 
+    }
+
+    PlaceSearchSuggestionModel {
+        id: suggestionModel
+
+        onStatusChanged: {
+
+        }
     }
 
     //! [Places MapItemView]
     Map {
         id: map
-        //anchors.fill: parent
-        Layout.alignment: Qt.AlignLeft
-        Layout.margins: 5
-        Layout.fillWidth: true
-        Layout.fillHeight: true
+        width: appWindow.width
+        height: appWindow.height
+
+      //  anchors.fill: parent
         plugin: mapboxPlugin;
         center: locationHelsinki
         zoomLevel: 13
@@ -161,7 +192,7 @@ ColumnLayout {
                 anchorPoint.y: image.height
 
                 sourceItem: Column {
-                    Image { id: image; source: "marker.png" }
+                    Image { id: image; source: "items/marker.png" }
                     Text { text: title; font.bold: true }
                 }
             }
@@ -169,5 +200,18 @@ ColumnLayout {
     }
     //! [Places MapItemView]
 
+    SearchResults {
+        id: searchResults
+        width: appWindow.width
+        visible: false
+
+        onFlyTo: {
+            console.log("SELECTED",loc);
+            searchResults.visible=false;
+            var currentPosition = loc.coordinate;
+            map.center = currentPosition
+        }
+
+    }
 
 }
