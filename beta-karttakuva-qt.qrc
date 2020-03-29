@@ -6,6 +6,5 @@
         <file>items/search.png</file>
         <file>items/left.png</file>
         <file>items/SearchResults.qml</file>
-        <file>items/Marker.qml</file>
     </qresource>
 </RCC>
