@@ -61,12 +61,15 @@ int main(int argc, char **argv)
     // copy build-beta-karttakuva-qtplugin-Desktop_Qt_5_14_1_clang_64bit-Release/plugins/geoservices/libqtgeoservices_betakarttakuva.dylib*
     // to .../Qt514/5.14.1/clang_64/plugins/geoservices
 
+
     QList<QString> providers = QGeoServiceProvider::availableServiceProviders();
     qDebug()<<providers;
     qDebug()<<app.libraryPaths();
 
     QQmlApplicationEngine engine;
-    engine.addImportPath(QStringLiteral(":/imports"));
+    engine.addImportPath("assets:/");
+    engine.addPluginPath(QCoreApplication::applicationDirPath());
+//    engine.addImportPath(QStringLiteral(":/imports"));
     engine.load(QUrl(QStringLiteral("qrc:///beta-karttakuva-qt.qml")));
     QObject::connect(&engine, SIGNAL(quit()), qApp, SLOT(quit()));
 

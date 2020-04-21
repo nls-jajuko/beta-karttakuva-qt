@@ -95,7 +95,12 @@ ApplicationWindow {
         allowExperimental: true
         PluginParameter {
                   name: "betakarttakuva.places.host"
-                  value: "https://beta-paikkatieto.maanmittauslaitos.fi"
+                  value: "https://avoin-paikkatieto.maanmittauslaitos.fi"
+
+        }
+        PluginParameter {
+                  name: "betakarttakuva.places.apikey"
+                  value: "7cd2ddae-9f2e-481c-99d0-404e7bc7a0b2"
 
         }
 
