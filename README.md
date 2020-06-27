@@ -2,10 +2,11 @@
 
 a multi-platform map app mashup with help from qt.io examples
 
-Unofficial Proof-of-concept Android app for <https://avoin-karttakuva.maanmittauslaitos.f> Vector tiles service.
+Unofficial Proof-of-concept Qt app for <https://avoin-karttakuva.maanmittauslaitos.f> Vector tiles service.
 see <https://beta-karttakuva.maanmittauslaitosfi> for more information.
 No support or warranty of any kind is available. 
 
+Tested running Qt on Mac OS . Might work on other platforms also.
 
 with geocoding 
 ( needs libqtgeoservices_betakarttakuva.dylib in plugins/geoservices )
