@@ -2,8 +2,8 @@
 
 a multi-platform map app mashup with help from qt.io examples
 
-Unofficial Proof-of-concept Qt app for <https://avoin-karttakuva.maanmittauslaitos.f> Vector tiles service.
-see <https://beta-karttakuva.maanmittauslaitosfi> for more information.
+Unofficial Proof-of-concept Qt app for <https://avoin-karttakuva.maanmittauslaitos.fi> Vector tiles service.
+see <https://beta-karttakuva.maanmittauslaitos.fi> for more information.
 No support or warranty of any kind is available. 
 
 Tested running Qt on Mac OS . Might work on other platforms also.
